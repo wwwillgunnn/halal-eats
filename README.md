@@ -6,7 +6,7 @@ Access the app here: [Halal Eats!](https://halaleats.vercel.app)
 
 ## Preview
 
-👉 Add screenshots or a demo video here
+<img width="1912" height="975" alt="image" src="https://github.com/user-attachments/assets/984879ad-30e0-4fef-9831-0f1ad856dc60" />
 
 ## Tech Stack
 
