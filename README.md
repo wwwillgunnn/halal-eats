@@ -2,11 +2,11 @@
 
 Halal Eats is a web application that helps users discover halal food anywhere. Whether you're exploring a new city or just looking for nearby options, Halal Eats makes it easy to find restaurants, view locations on a map, and navigate to them in real time.
 
-Access the app here: [Halal Eats!](https://halaleats.vercel.app)
+Access the app here: [Halal Eats!](https://halal-eats-ebon.vercel.app)
 
 ## Preview
 
-👉 Add screenshots or a demo video here
+<img width="1912" height="975" alt="image" src="https://github.com/user-attachments/assets/984879ad-30e0-4fef-9831-0f1ad856dc60" />
 
 ## Tech Stack
 
