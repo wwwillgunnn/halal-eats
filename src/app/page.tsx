@@ -1,7 +1,7 @@
 "use client";
 
 import { useViewMode } from "@/components/view-mode-provider";
-import { MapView } from "@/components/view-map";
+import { MapView } from "@/components/map/map-view";
 import { ListView } from "@/components/view-list";
 
 export default function Page() {

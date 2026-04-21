@@ -1,4 +1,5 @@
 import { SearchIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 import {
   InputGroup,
@@ -6,13 +7,15 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 
-export function SearchBar() {
+type SearchBarProps = React.ComponentProps<"div">;
+
+export function SearchBar({ className, ...props }: SearchBarProps) {
   return (
-    <InputGroup>
-      <InputGroupInput id="inline-start-input" placeholder="Search..." />
+    <InputGroup className={cn(className)} {...props}>
       <InputGroupAddon align="inline-start">
         <SearchIcon className="text-muted-foreground" />
       </InputGroupAddon>
+      <InputGroupInput id="inline-start-input" placeholder="Search..." />
     </InputGroup>
   );
 }

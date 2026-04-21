@@ -5,7 +5,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ViewModeProvider } from "@/components/view-mode-provider";
-import MobileMenu from "@/components/mobile-menu";
+import MobileMenu from "@/components/map/mobile-menu";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-sans",
