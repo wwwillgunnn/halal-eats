@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { SearchBar } from "@/components/search-bar";
-import { SelectGroup } from "@/components/select-group";
+import { SearchBar } from "@/components/sidebar/search-bar";
+import { SelectGroup } from "@/components/sidebar/select-group";
 import { Map, Plus, X, Store, MapPin, Utensils, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 

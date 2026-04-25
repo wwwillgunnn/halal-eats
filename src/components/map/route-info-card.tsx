@@ -1,5 +1,5 @@
-import { Clock, Route as RouteIcon } from "lucide-react";
-import type { Place } from "@/components/map/restaurant-marker";
+import { Clock, Route as RouteIcon, X } from "lucide-react";
+import type { Place } from "@/lib/places";
 import type { RouteData, TravelMode } from "@/lib/types";
 import {
   formatDistance,
@@ -12,18 +12,29 @@ interface RouteInfoCardProps {
   travelMode: TravelMode;
   route: RouteData | null;
   selectedPlace: Place | null;
+  onClearSelectedPlace: () => void;
 }
 
 export function RouteInfoCard({
   travelMode,
   route,
   selectedPlace,
+  onClearSelectedPlace,
 }: RouteInfoCardProps) {
   const modeLabel = getModeLabel(travelMode);
   const routeColor = getRouteColor(travelMode);
 
   return (
-    <div className="rounded-xl border bg-background/95 px-3 py-2 shadow-md backdrop-blur supports-backdrop-filter:bg-background/80">
+    <div className="relative rounded-xl border bg-background/95 px-3 py-2 pr-9 shadow-md backdrop-blur supports-backdrop-filter:bg-background/80">
+      <button
+        type="button"
+        onClick={onClearSelectedPlace}
+        aria-label="Unselect place"
+        className="absolute right-2 top-2 rounded-full p-1 text-muted-foreground transition hover:bg-muted hover:text-foreground"
+      >
+        <X className="size-4" />
+      </button>
+
       {travelMode === "transit" ? (
         <div>
           <p className="text-sm font-medium">Public transport unavailable</p>

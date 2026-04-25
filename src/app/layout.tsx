@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { ThemeProvider } from "@/components/theme-provider";
-import { ViewModeProvider } from "@/components/view-mode-provider";
+import { ThemeProvider } from "@/components/sidebar/theme-provider";
+import { ViewModeProvider } from "@/components/providers/view-mode-provider";
 import MobileMenu from "@/components/map/mobile-menu";
+import { MapSearchProvider } from "@/components/providers/map-search-provider";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-sans",
@@ -43,9 +44,11 @@ export default function RootLayout({
         >
           <SidebarProvider>
             <ViewModeProvider>
-              <AppSidebar />
-              <SidebarInset>{children}</SidebarInset>
-              <MobileMenu />
+              <MapSearchProvider>
+                <AppSidebar />
+                <SidebarInset>{children}</SidebarInset>
+                <MobileMenu />
+              </MapSearchProvider>
             </ViewModeProvider>
           </SidebarProvider>
         </ThemeProvider>

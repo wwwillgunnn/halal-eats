@@ -2,9 +2,9 @@
 
 import * as React from "react";
 
-import { NavMain } from "@/components/nav-main";
-import { NavUser } from "@/components/nav-user";
-import { TopNavigation } from "@/components/top-navigation";
+import { NavMain } from "@/components/sidebar/nav-main";
+import { NavUser } from "@/components/sidebar/nav-user";
+import { TopNavigation } from "@/components/sidebar/top-navigation";
 import {
   Sidebar,
   SidebarContent,
@@ -19,7 +19,7 @@ import {
   BookOpenIcon,
   Settings2Icon,
 } from "lucide-react";
-import NavStores from "./nav-stores";
+import NavStores from "@/components/sidebar/nav-stores";
 
 // This is sample data.
 const data = {

@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Map, MapControls, MapRoute, type MapRef } from "@/components/ui/map";
 import { Loader2 } from "lucide-react";
-import { RestaurantMarker, type Place } from "./restaurant-marker";
+import { RestaurantMarker } from "./restaurant-marker";
 import { TravelModeToggle } from "./travel-mode-toggle";
 import { RouteInfoCard } from "./route-info-card";
 import { MapStyleSelect } from "./map-style-select";
@@ -9,6 +9,7 @@ import { StartMarker } from "./start-marker";
 import { useRoute } from "@/hooks/use-route";
 import { getRouteColor } from "@/lib/route-utils";
 import type { TravelMode } from "@/lib/types";
+import { useMapSearch } from "@/components/providers/map-search-provider";
 
 const styles = {
   default: undefined,
@@ -18,17 +19,25 @@ const styles = {
 
 type StyleKey = keyof typeof styles;
 
-// TODO: Change to actual location
-const start = { name: "Start", lng: 2.3522, lat: 48.8566 };
+const DEFAULT_CENTER: [number, number] = [151.2093, -33.8688];
 
 export function MapView() {
   const mapRef = useRef<MapRef>(null);
+
   const [style, setStyle] = useState<StyleKey>("default");
-  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   const [travelMode, setTravelMode] = useState<TravelMode>("driving");
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(
+    null,
+  );
+
+  const { selectedPlace, setSelectedPlace } = useMapSearch();
 
   const selectedStyle = styles[style];
   const is3D = style === "openstreetmap3d";
+
+  const start = userLocation
+    ? { name: "Your location", lng: userLocation[0], lat: userLocation[1] }
+    : { name: "Start", lng: DEFAULT_CENTER[0], lat: DEFAULT_CENTER[1] };
 
   const { route, isLoadingRoute } = useRoute({
     selectedPlace,
@@ -36,38 +45,74 @@ export function MapView() {
     start,
   });
 
-  const routeColor = useMemo(() => getRouteColor(travelMode), [travelMode]);
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { longitude, latitude } = position.coords;
+        const currentLocation: [number, number] = [longitude, latitude];
+
+        setUserLocation(currentLocation);
+
+        mapRef.current?.flyTo({
+          center: currentLocation,
+          zoom: 14,
+          duration: 900,
+        });
+      },
+      (error) => {
+        console.error("Could not get location:", error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      },
+    );
+  }, []);
 
   useEffect(() => {
-    mapRef.current?.easeTo({ pitch: is3D ? 60 : 0, duration: 500 });
+    mapRef.current?.easeTo({
+      pitch: is3D ? 60 : 0,
+      duration: 500,
+    });
   }, [is3D]);
 
   useEffect(() => {
-    if (!route?.coordinates.length) return;
+    if (route?.coordinates.length) {
+      const lngs = route.coordinates.map(([lng]) => lng);
+      const lats = route.coordinates.map(([, lat]) => lat);
 
-    const lngs = route.coordinates.map((coord) => coord[0]);
-    const lats = route.coordinates.map((coord) => coord[1]);
+      mapRef.current?.fitBounds(
+        [
+          [Math.min(...lngs), Math.min(...lats)],
+          [Math.max(...lngs), Math.max(...lats)],
+        ],
+        {
+          padding: 80,
+          duration: 800,
+        },
+      );
 
-    const west = Math.min(...lngs);
-    const east = Math.max(...lngs);
-    const south = Math.min(...lats);
-    const north = Math.max(...lats);
+      return;
+    }
 
-    mapRef.current?.fitBounds(
-      [
-        [west, south],
-        [east, north],
-      ],
-      { padding: 80, duration: 800 },
-    );
-  }, [route]);
+    if (selectedPlace) {
+      mapRef.current?.flyTo({
+        center: [selectedPlace.lng, selectedPlace.lat],
+        zoom: 15,
+        duration: 900,
+      });
+    }
+  }, [route, selectedPlace]);
 
   return (
     <div className="relative h-screen w-full">
       <Map
         ref={mapRef}
-        center={[2.3522, 48.8566]}
-        zoom={8.5}
+        center={userLocation ?? DEFAULT_CENTER}
+        zoom={userLocation ? 13 : 8}
         styles={
           selectedStyle
             ? { light: selectedStyle, dark: selectedStyle }
@@ -92,23 +137,29 @@ export function MapView() {
         {route && travelMode !== "transit" && (
           <MapRoute
             coordinates={route.coordinates}
-            color={routeColor}
+            color={getRouteColor(travelMode)}
             width={6}
             opacity={0.95}
           />
         )}
 
         <StartMarker lng={start.lng} lat={start.lat} />
-        <RestaurantMarker onDirections={setSelectedPlace} />
+
+        <RestaurantMarker
+          onDirections={setSelectedPlace}
+          selectedPlaceId={selectedPlace?.id ?? null}
+        />
       </Map>
 
       {selectedPlace && (
-        <div className="absolute inset-x-3 bottom-28 z-10 flex flex-col gap-2 w-72 md:w-auto md:inset-x-auto md:bottom-auto md:left-3 md:top-3 md:max-w-[calc(100%-1.5rem)]">
+        <div className="absolute inset-x-3 bottom-28 z-10 flex w-72 flex-col gap-2 md:inset-x-auto md:bottom-auto md:left-3 md:top-3 md:w-auto md:max-w-[calc(100%-1.5rem)]">
           <RouteInfoCard
             travelMode={travelMode}
             route={route}
             selectedPlace={selectedPlace}
+            onClearSelectedPlace={() => setSelectedPlace(null)}
           />
+
           <TravelModeToggle travelMode={travelMode} onChange={setTravelMode} />
         </div>
       )}

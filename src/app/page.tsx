@@ -1,6 +1,6 @@
 "use client";
 
-import { useViewMode } from "@/components/view-mode-provider";
+import { useViewMode } from "@/components/providers/view-mode-provider";
 import { MapView } from "@/components/map/map-view";
 import { ListView } from "@/components/view-list";
 

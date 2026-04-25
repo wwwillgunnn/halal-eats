@@ -1,5 +1,3 @@
-"use client";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -46,7 +44,7 @@ export function NavUser({
             }
           >
             <Avatar>
-              <AvatarImage src={user.avatar} alt={user.name} />
+              {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
               <AvatarFallback>TS</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">

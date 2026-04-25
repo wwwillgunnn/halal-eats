@@ -1,7 +1,7 @@
 "use client";
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useViewMode } from "@/components/view-mode-provider";
+import { useViewMode } from "@/components/providers/view-mode-provider";
 
 export function ModeSwitch() {
   const { view, setView } = useViewMode();

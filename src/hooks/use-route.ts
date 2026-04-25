@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Place } from "@/components/map/restaurant-marker";
+import type { Place } from "@/lib/places";
 import type { RouteData, TravelMode } from "@/lib/types";
 import { getOsrmProfile } from "@/lib/route-utils";
 
