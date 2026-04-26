@@ -5,24 +5,8 @@ import { SearchBar } from "@/components/sidebar/search-bar";
 import { SelectGroup } from "@/components/sidebar/select-group";
 import { Map, Plus, X, Store, MapPin, Utensils, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const stores = [
-  {
-    id: 1,
-    name: "Halal Bites",
-    subtitle: "Burgers · 8 min away",
-  },
-  {
-    id: 2,
-    name: "Spice Corner",
-    subtitle: "Pakistani · 12 min away",
-  },
-  {
-    id: 3,
-    name: "Sultan Grill",
-    subtitle: "BBQ · 15 min away",
-  },
-];
+import { places } from "@/lib/places";
+import { Button } from "../ui/button";
 
 type PanelType = "explore" | "contribute" | null;
 
@@ -42,9 +26,9 @@ function ExplorePanel() {
         <SelectGroup />
 
         <div className="max-h-56 space-y-2 overflow-y-auto">
-          {stores.map((store) => (
+          {places.map((place) => (
             <button
-              key={store.id}
+              key={place.id}
               type="button"
               className="flex w-full items-start gap-3 rounded-xl border bg-card px-3 py-3 text-left shadow-sm transition hover:bg-accent"
             >
@@ -54,10 +38,15 @@ function ExplorePanel() {
 
               <div className="min-w-0">
                 <p className="truncate text-sm font-medium text-foreground">
-                  {store.name}
+                  {place.name}
                 </p>
+
                 <p className="text-xs text-muted-foreground">
-                  {store.subtitle}
+                  {place.category} · {place.label}
+                </p>
+
+                <p className="mt-1 text-xs text-muted-foreground">
+                  ⭐ {place.rating} ({place.reviews.toLocaleString()} reviews)
                 </p>
               </div>
             </button>
@@ -98,7 +87,7 @@ function ContributePanel() {
   }
 
   return (
-    <div className="mb-12 rounded-2xl border bg-background/95 p-4 shadow-lg backdrop-blur supports-backdrop-filter:bg-background/80">
+    <div className="rounded-2xl border bg-background/95 p-4 shadow-lg backdrop-blur supports-backdrop-filter:bg-background/80">
       <div className="space-y-4">
         <div>
           <h3 className="text-sm font-semibold text-foreground">
@@ -219,30 +208,29 @@ export default function MobileMenu() {
   }
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-50 flex flex-col justify-between md:hidden">
-      <div className="pointer-events-auto mt-8 space-y-2 p-4">
+    <div className="pointer-events-none fixed inset-0 z-50 flex flex-col md:hidden">
+      <div className="pointer-events-auto p-4 pt-8">
         <SearchBar className="bg-background/95 shadow-md backdrop-blur supports-backdrop-filter:bg-background/80" />
       </div>
 
-      <div className="pointer-events-auto">
+      <div className="pointer-events-auto mt-auto">
         <div
           className={cn(
-            "overflow-hidden transition-all duration-300 ease-in-out",
+            "overflow-hidden px-4 transition-all duration-300 ease-in-out",
             openPanel
-              ? "max-h-[55vh] translate-y-0 px-4 opacity-100"
-              : "max-h-0 translate-y-4 px-4 pb-0 opacity-0",
-            isExploreOpen && openPanel && "pb-4",
-            isContributeOpen && openPanel && "pb-28",
+              ? "max-h-[calc(100dvh-180px)] translate-y-0 opacity-100"
+              : "max-h-0 translate-y-4 opacity-0",
           )}
         >
-          {isExploreOpen && <ExplorePanel />}
-          {isContributeOpen && <ContributePanel />}
+          <div className="max-h-[calc(100dvh-220px)] overflow-y-auto pb-4">
+            {isExploreOpen && <ExplorePanel />}
+            {isContributeOpen && <ContributePanel />}
+          </div>
         </div>
 
         <div className="w-full rounded-t-2xl border bg-background/95 p-6 shadow-lg backdrop-blur supports-backdrop-filter:bg-background/80">
           <div className="grid grid-cols-2 gap-3">
-            <button
-              type="button"
+            <Button
               onClick={() => togglePanel("explore")}
               className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-4 text-sm font-medium shadow-sm transition ${
                 isExploreOpen
@@ -256,9 +244,9 @@ export default function MobileMenu() {
                 <Map className="size-5" />
               )}
               <span>{isExploreOpen ? "Close" : "Explore"}</span>
-            </button>
+            </Button>
 
-            <button
+            <Button
               type="button"
               onClick={() => togglePanel("contribute")}
               className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-4 text-sm font-medium shadow-sm transition ${
@@ -273,7 +261,7 @@ export default function MobileMenu() {
                 <Plus className="size-5" />
               )}
               <span>{isContributeOpen ? "Close" : "Contribute"}</span>
-            </button>
+            </Button>
           </div>
         </div>
       </div>
