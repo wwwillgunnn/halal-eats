@@ -2,6 +2,7 @@
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useViewMode } from "@/components/providers/view-mode-provider";
+import { Map, List } from "lucide-react";
 
 export function ModeSwitch() {
   const { view, setView } = useViewMode();
@@ -13,8 +14,12 @@ export function ModeSwitch() {
       className="w-full"
     >
       <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="map">Map</TabsTrigger>
-        <TabsTrigger value="list">List</TabsTrigger>
+        <TabsTrigger value="map">
+          <Map />
+        </TabsTrigger>
+        <TabsTrigger value="list">
+          <List />
+        </TabsTrigger>
       </TabsList>
     </Tabs>
   );

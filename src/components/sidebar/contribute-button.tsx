@@ -24,6 +24,14 @@ export function ContributeButton() {
             <Plus className="size-4" />
             Contribute
           </Button>
+          // ? Think about making this left aligned instead
+          // <Button
+          //   variant="outline"
+          //   className="flex h-10 w-full items-center justify-start gap-2 rounded-xl px-3 text-left font-normal"
+          // >
+          //   <Plus className="size-4 shrink-0" />
+          //   <span>Contribute</span>
+          // </Button>
         }
       />
 

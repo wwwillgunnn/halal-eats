@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { SearchBar } from "@/components/sidebar/search-bar";
-import { SelectGroup } from "@/components/sidebar/select-group";
 import { Map, Plus, X, Store, MapPin, Utensils, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { places } from "@/lib/places";
 import { Button } from "../ui/button";
+import { HalalTierToggle } from "../sidebar/halal-tier-toggle";
 
 type PanelType = "explore" | "contribute" | null;
 
@@ -23,7 +23,7 @@ function ExplorePanel() {
           </p>
         </div>
 
-        <SelectGroup />
+        <HalalTierToggle />
 
         <div className="max-h-56 space-y-2 overflow-y-auto">
           {places.map((place) => (
@@ -232,7 +232,7 @@ export default function MobileMenu() {
           <div className="grid grid-cols-2 gap-3">
             <Button
               onClick={() => togglePanel("explore")}
-              className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-4 text-sm font-medium shadow-sm transition ${
+              className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-6 text-sm font-medium shadow-sm transition ${
                 isExploreOpen
                   ? "bg-accent text-foreground"
                   : "bg-card text-foreground hover:bg-accent"
@@ -249,7 +249,7 @@ export default function MobileMenu() {
             <Button
               type="button"
               onClick={() => togglePanel("contribute")}
-              className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-4 text-sm font-medium shadow-sm transition ${
+              className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-6 text-sm font-medium shadow-sm transition ${
                 isContributeOpen
                   ? "bg-accent text-foreground"
                   : "bg-card text-foreground hover:bg-accent"

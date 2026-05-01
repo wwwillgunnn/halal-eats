@@ -1,8 +1,8 @@
 import { SidebarGroup } from "@/components/ui/sidebar";
 import { SearchBar } from "./search-bar";
-import { SelectGroup } from "./select-group";
 import { ModeSwitch } from "./mode-switch";
 import { ContributeButton } from "./contribute-button";
+import { HalalTierToggle } from "./halal-tier-toggle";
 
 export function NavMain() {
   return (
@@ -10,7 +10,7 @@ export function NavMain() {
       <div className="space-y-4 p-2">
         <ContributeButton />
         <SearchBar />
-        <SelectGroup />
+        <HalalTierToggle />
         <ModeSwitch />
       </div>
     </SidebarGroup>

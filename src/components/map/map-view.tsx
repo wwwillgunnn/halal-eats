@@ -10,6 +10,7 @@ import { useRoute } from "@/hooks/use-route";
 import { getRouteColor } from "@/lib/route-utils";
 import type { TravelMode } from "@/lib/types";
 import { useMapSearch } from "@/components/providers/map-search-provider";
+import { RestaurantFilters } from "../sidebar/restaurant-filters";
 
 const styles = {
   default: undefined,
@@ -168,6 +169,8 @@ export function MapView() {
         style={style}
         onChange={(value) => setStyle(value as StyleKey)}
       />
+
+      <RestaurantFilters />
 
       {isLoadingRoute && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-background/40">
